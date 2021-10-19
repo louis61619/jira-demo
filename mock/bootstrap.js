@@ -7,6 +7,7 @@ Array.prototype.random = function () {
 
 const pickId = (item) => item.id
 
+// 初始化數據
 export const bootstrap = (id) => {
   taskTypeDB.push(assignId(id, initialData.taskTypes))
   projectDB.push(assignId(id, initialData.projects))

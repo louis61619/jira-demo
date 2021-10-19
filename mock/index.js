@@ -6,7 +6,7 @@ export const startServer = () => {
   server.start({
     quiet: true,
     serviceWorker: {
-      url: '/' + 'mockServiceWorker.js'
+      url: '/mockServiceWorker.js'
     }
   })
 }

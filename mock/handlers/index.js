@@ -16,7 +16,7 @@ function ls(key, defaultVal) {
 const sleep = (t = ls('__jira_min_request_time__', 200)) =>
   new Promise((resolve) => setTimeout(resolve, t))
 
-export const handlers = [
+const handlers = [
   ...userHandlers,
   ...getRestHandlers('projects', projectDB),
   ...getRestHandlers('epics', epicDB),
@@ -28,14 +28,11 @@ export const handlers = [
   ...getRestHandlers('users', userDB),
   ...reorderHandlers
 ].map((handler) => {
-  return {
-    ...handler,
-    async resolver(req, res, ctx) {
+  const oldResolver = handler.resolver
+  return Object.assign(handler, {
+    resolver: async (req, res, ctx) => {
       try {
-        if (shouldFail(req)) {
-          throw new Error('请求失败，请检查 jira-dev-tool 的设置')
-        }
-        const result = await handler.resolver(req, res, ctx)
+        const result = await oldResolver(req, res, ctx)
         return result
       } catch (error) {
         const status = error.status || 500
@@ -47,7 +44,28 @@ export const handlers = [
         await sleep()
       }
     }
-  }
+  })
+  // return {
+  // ...handler
+  // async resolver(req, res, ctx) {
+  //   console.log(req, res)
+  //   try {
+  //     if (shouldFail(req)) {
+  //       throw new Error('请求失败，请检查 jira-dev-tool 的设置')
+  //     }
+  //     const result = await handler.resolver(req, res, ctx)
+  //     return result
+  //   } catch (error) {
+  //     const status = error.status || 500
+  //     return res(
+  //       ctx.status(status),
+  //       ctx.json({ status, message: error.message || 'Unknown Error' })
+  //     )
+  //   } finally {
+  //     await sleep()
+  //   }
+  // }
+  // }
 })
 
 function shouldFail(req) {
@@ -78,3 +96,5 @@ function requestMatchesFailConfig(req) {
   }
   return false
 }
+
+export { handlers }

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button } from 'antd'
 import { useAuth } from '@/hooks'
 import ProjectList from './project-list'
 
@@ -8,7 +9,9 @@ const Main = (props: MainProps) => {
   const { logout } = useAuth()
   return (
     <div>
-      <button onClick={logout}>登出</button>
+      <Button type="primary" onClick={logout}>
+        登出
+      </Button>
       <ProjectList />
     </div>
   )

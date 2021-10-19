@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import Qs from 'qs'
 
 import { cleanObject } from '@/utils/clean-object'
-import { apiUrl } from '@/service'
-import { useMount, useDebounce } from '@/hooks'
+import { useMount, useDebounce, useReuqest } from '@/hooks'
 
 import SearchPanel from './components/SearchPanel'
 import List from './components/List'
@@ -20,23 +18,22 @@ const ProjectList = (props: ProjectListProps) => {
   const [users, setUsers] = useState([])
   const [list, setList] = useState([])
 
-  const debounceParam = useDebounce(param, 1000)
+  const debounceParam = useDebounce(param, 200)
+  const client = useReuqest()
 
   useEffect(() => {
-    fetch(`${apiUrl}/projects?${Qs.stringify(cleanObject(debounceParam))}`).then(async (res) => {
-      if (res.ok) setList(await res.json())
-    })
-  }, [debounceParam])
+    // fetch(`${apiUrl}/projects?${Qs.stringify(cleanObject(debounceParam))}`).then(async (res) => {
+    //   if (res.ok) setList(await res.json())
+    // })
+    client('projects', { data: cleanObject(debounceParam) }).then(setList)
+  }, [debounceParam, client])
 
   useMount(() => {
-    fetch(`${apiUrl}/users`).then(async (res) => {
-      if (res.ok) setUsers(await res.json())
-    })
+    // fetch(`${apiUrl}/users`).then(async (res) => {
+    //   if (res.ok) setUsers(await res.json())
+    // })
+    client('users').then(setUsers)
   })
-
-  useEffect(() => {
-    console.log(debounceParam)
-  }, [debounceParam])
 
   return (
     <div>
