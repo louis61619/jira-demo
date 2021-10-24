@@ -1,8 +1,10 @@
 import React from 'react'
-import { Input, Select } from 'antd'
-import type { User } from '@/types'
+import { Input, Select, Form } from 'antd'
 
-interface SearchPanelProps {
+import type { User } from '@/types'
+import { FormWrapper } from './style'
+
+export interface SearchPanelProps {
   param: {
     name: string
     personId: string
@@ -16,36 +18,40 @@ const SearchPanel = (props: SearchPanelProps) => {
   const { param, setParam, users } = props
 
   return (
-    <div>
-      <Input
-        type="text"
-        value={param.name}
-        onChange={(e) => {
-          setParam({
-            ...param,
-            name: e.target.value
-          })
-        }}
-      />
-      <Select
-        onChange={(value) => {
-          setParam({
-            ...param,
-            personId: value
-          })
-        }}
-        value={param.personId}
-      >
-        <Select.Option value={''}>全部</Select.Option>
-        {users.map((item) => {
-          return (
-            <Select.Option value={item.id} key={item.id}>
-              {item.name}
-            </Select.Option>
-          )
-        })}
-      </Select>
-    </div>
+    <FormWrapper layout="inline">
+      <Form.Item>
+        <Input
+          type="text"
+          value={param.name}
+          onChange={(e) => {
+            setParam({
+              ...param,
+              name: e.target.value
+            })
+          }}
+        />
+      </Form.Item>
+      <Form.Item>
+        <Select
+          onChange={(value) => {
+            setParam({
+              ...param,
+              personId: value
+            })
+          }}
+          value={param.personId}
+        >
+          <Select.Option value={''}>全部</Select.Option>
+          {users.map((item) => {
+            return (
+              <Select.Option value={item.id} key={item.id}>
+                {item.name}
+              </Select.Option>
+            )
+          })}
+        </Select>
+      </Form.Item>
+    </FormWrapper>
   )
 }
 

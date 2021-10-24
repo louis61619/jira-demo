@@ -32,6 +32,9 @@ const handlers = [
   return Object.assign(handler, {
     resolver: async (req, res, ctx) => {
       try {
+        if (shouldFail(req)) {
+          throw new Error('請求失敗')
+        }
         const result = await oldResolver(req, res, ctx)
         return result
       } catch (error) {

@@ -21,7 +21,7 @@ export const login = (data: AuthForm) => {
     if (res.ok) {
       return handleUserResponse(await res.json())
     } else {
-      return Promise.reject(res)
+      return Promise.reject(await res.json())
     }
   })
 }
@@ -37,7 +37,7 @@ export const register = (data: AuthForm) => {
     if (res.ok) {
       return handleUserResponse(await res.json())
     } else {
-      return Promise.reject(res)
+      return Promise.reject(await res.json())
     }
   })
 }

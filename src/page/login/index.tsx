@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { Form, Button, Input, Divider } from 'antd'
+import { Form, Button, Input, Divider, Typography } from 'antd'
 
-import { useAuth } from '@/hooks'
+import { useAuth, useAsync, useUnMount, useDocumentTitle } from '@/hooks'
 
-import { Container, CardWrapper, Logo, LongButton } from './style'
+import { Container, CardWrapper, Logo, LongButton, ErrorWrapper } from './style'
 
 type Tab = 'login' | 'register'
 
@@ -11,29 +11,71 @@ type Tab = 'login' | 'register'
 
 const Login: React.FC = (props) => {
   const { login, register } = useAuth()
+  const [form] = Form.useForm()
 
   const [currentTab, setCurrentTab] = useState<Tab>('login')
+  const [error, setError] = useState<Error | null>(null)
+  const { run, isLoading } = useAsync(undefined, { throwOnError: true })
 
-  const handleSubmit = (value: any) => {
-    currentTab === 'login' ? login(value) : register(value)
+  useUnMount()
+  useDocumentTitle('請登錄註冊以繼續')
+
+  const handleSubmit = async ({
+    cpassword,
+    ...value
+  }: {
+    username: string
+    password: string
+    cpassword?: string
+  }) => {
+    if (currentTab === 'register') {
+      if (value.password !== cpassword) {
+        return setError(new Error('請確認兩次輸入的密碼相同'))
+      }
+    }
+    const request = currentTab === 'login' ? login : register
+    // run(request(value))
+    try {
+      // 注意如果用trycatch捕捉錯誤要用await
+      // await request(value)
+      await run(request(value))
+      // console.log(res)
+    } catch (e: any) {
+      setError(e)
+    }
   }
 
   const changeTab = () => {
     setCurrentTab(currentTab === 'login' ? 'register' : 'login')
+    setError(null)
+    form.resetFields()
   }
 
   return (
     <Container>
       <CardWrapper>
         <Logo />
-        <Form onFinish={(value) => handleSubmit(value)}>
+        <ErrorWrapper>
+          {error && <Typography.Text type="danger">{error.message}</Typography.Text>}
+        </ErrorWrapper>
+        <Form form={form} onFinish={(value) => handleSubmit(value)}>
           <Form.Item name="username" rules={[{ required: true, message: '請輸入用戶名' }]}>
-            <Input placeholder="用戶名" type="text" id="username" />
+            <Input autoComplete="" placeholder="用戶名" type="text" id="username" />
           </Form.Item>
           <Form.Item name="password" rules={[{ required: true, message: '請輸入密碼' }]}>
-            <Input placeholder="密碼" type="text" id="password" />
+            <Input autoComplete="" placeholder="密碼" type="password" id="password" />
           </Form.Item>
-          <LongButton htmlType="submit" type="primary">
+          {currentTab === 'register' && (
+            <Form.Item name="cpassword" rules={[{ required: true, message: '請確認密碼' }]}>
+              <Input
+                autoComplete="new-password"
+                placeholder="確認密碼"
+                type="password"
+                id="cpassword"
+              />
+            </Form.Item>
+          )}
+          <LongButton loading={isLoading} htmlType="submit" type="primary">
             {currentTab === 'login' ? '登錄' : '註冊'}
           </LongButton>
         </Form>

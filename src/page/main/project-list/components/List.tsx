@@ -1,26 +1,35 @@
 import React from 'react'
-import { Table, TableColumnsType } from 'antd'
+
+import { Table, TableColumnsType, TableProps } from 'antd'
+import { Link } from 'react-router-dom'
 import type { User } from '@/types'
 
-interface ListProps {
-  list: {
-    id: number
-    name: string
-    personId: number
-    pin: boolean
-    organization: string
-  }[]
+import { foramteDate } from '@/utils/fomate-time'
+
+export type Project = {
+  id: number
+  name: string
+  personId: number
+  pin: boolean
+  organization: string
+  created: string
+}
+
+interface ListProps extends TableProps<Project> {
   users: User[]
 }
 
 const List = (props: ListProps) => {
-  const { list, users } = props
+  const { users, ...otherProps } = props
 
-  const columns: TableColumnsType<ListProps['list'][0]> = [
+  const columns: TableColumnsType<Project> = [
     {
       title: '名稱',
-      dataIndex: 'name',
-      sorter: (a: any, b: any) => a.name.localeCompare(b.name)
+      // dataIndex: 'name',
+      sorter: (a: any, b: any) => a.name.localeCompare(b.name),
+      render(value, project) {
+        return <Link to={project.id.toString()}>{project.name}</Link>
+      }
     },
     {
       title: '負責人',
@@ -31,11 +40,17 @@ const List = (props: ListProps) => {
           </span>
         )
       }
+    },
+    {
+      title: '創建時間',
+      render(value, project) {
+        return <span key={project.id}>{project.created ? foramteDate(project.created) : '無'}</span>
+      }
     }
   ]
 
   // table中的類型為從datasource自動推導
-  return <Table pagination={false} rowKey="id" columns={columns} dataSource={list} />
+  return <Table pagination={false} rowKey="id" columns={columns} {...otherProps} />
 
   // return (
   //   <table>

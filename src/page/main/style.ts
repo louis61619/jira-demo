@@ -1,8 +1,12 @@
 import styled from '@emotion/styled'
 
-export const MainWrapper = styled.div``
+export const MainWrapper = styled.div`
+  /* padding: 1.6rem; */
+`
 
-export const HeaderWrapper = styled.header``
+export const ContentWrapper = styled.main`
+  padding: 0 1.6rem;
+`
 
 // 使用grid佈局
 

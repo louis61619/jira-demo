@@ -31,3 +31,7 @@ export const Logo = styled.div`
 export const LongButton = styled(Button)`
   width: 100%;
 `
+
+export const ErrorWrapper = styled.div`
+  min-height: 30px;
+`
