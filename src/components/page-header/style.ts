@@ -1,9 +1,6 @@
 import styled from '@emotion/styled'
 import Row from '@/components/row'
 
-// 引入為組件的形式
-import { ReactComponent as Logo } from '@/assets/images/software-logo.svg'
-
 export const HeaderWrapper = styled.header`
   display: flex;
   justify-content: space-between;
@@ -18,13 +15,29 @@ export const NavBar = styled(Row)`
 
 export const NavItem = styled.h3<{
   type?: 'primary'
+  mobileHidden?: boolean
 }>`
   color: ${(props) => props.type === 'primary' && 'var(--color-primary)'};
+
+  @media (max-width: 525px) {
+    display: ${(props) => props.mobileHidden && 'none'};
+  }
 `
-export const NavLogo = styled(Logo)`
-  width: 18rem;
-  color: rgb(38, 132, 255);
+export const NavLogo = styled.div`
   cursor: pointer;
+
+  div {
+    display: flex;
+    align-items: center;
+    width: 16rem;
+    color: rgb(38, 132, 255);
+    cursor: pointer;
+  }
+
+  @media (max-width: 525px) {
+    width: 2.5rem;
+    overflow-y: hidden;
+  }
 `
 
 export const UserBar = styled(Row)``

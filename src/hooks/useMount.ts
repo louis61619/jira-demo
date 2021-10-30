@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 export function useMount(callback: () => void) {
   useEffect(() => {
@@ -18,4 +18,23 @@ export function useUnMount() {
   }
 
   return [didMount, setDidMount]
+}
+
+/**
+ * 用於返回組件的掛載狀態 如果還沒有掛載或是已經卸載返回false
+ */
+export function useMountedRef() {
+  const mountedRef = useRef(false)
+
+  useEffect(() => {
+    mountedRef.current = true
+
+    return () => {
+      mountedRef.current = false
+    }
+  }, [])
+
+  return {
+    mountedRef
+  }
 }

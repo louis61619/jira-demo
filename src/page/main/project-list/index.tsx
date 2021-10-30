@@ -1,12 +1,14 @@
 import React from 'react'
 
-import { useDebounce, useUrlQueryParam } from '@/hooks'
+import { useDebounce } from '@/hooks'
 import { useProjects } from '@/service/projects'
 import { useUsers } from '@/service/users'
-import { Typography } from 'antd'
+import { Typography, Divider } from 'antd'
 
 import SearchPanel from './components/SearchPanel'
 import List from './components/List'
+
+import { useProjectSearchParams } from './hooks'
 
 interface ProjectListProps {}
 
@@ -16,14 +18,16 @@ const ProjectList = (props: ProjectListProps) => {
   //   personId: ''
   // })
 
-  const [param, setParam] = useUrlQueryParam(['name', 'personId'])
+  // const [param, setParam] = useUrlQueryParam(['name', 'personId'])
   // const [list, setList] = useState([])
   // const [loading, setLoading] = useState(false)
   // const [error, setError] = useState<null | Error>(null)
   // const { run, isLoading, error, data: list } = useAsync<Project[]>()
+  // const projectParam = { ...param, personId: Number(param.personId) || undefined }
 
+  const [param, setParam] = useProjectSearchParams()
   const debounceParam = useDebounce(param, 200)
-  const { isLoading, error, data: list } = useProjects(debounceParam)
+  const { isLoading, error, data: list, retry } = useProjects(debounceParam)
   const { data: users } = useUsers()
 
   // useEffect(() => {
@@ -50,8 +54,10 @@ const ProjectList = (props: ProjectListProps) => {
   return (
     <div>
       <SearchPanel param={param} setParam={setParam} users={users || []} />
+      <Divider />
       {error && <Typography.Text type="danger">{error.message}</Typography.Text>}
-      <List loading={isLoading} dataSource={list || []} users={users || []} />
+      <button onClick={retry}>retry</button>
+      <List refresh={retry} loading={isLoading} dataSource={list || []} users={users || []} />
     </div>
   )
 }

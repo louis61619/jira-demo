@@ -1,15 +1,15 @@
 import React from 'react'
-import { Input, Select, Form } from 'antd'
+import { Input, Form } from 'antd'
 
 import type { User } from '@/types'
+
+import UserSelect from './UserSelect'
+
+import { Project } from './List'
 import { FormWrapper } from './style'
 
 export interface SearchPanelProps {
-  param: {
-    name: string
-    personId: string
-  }
-
+  param: Partial<Pick<Project, 'name' | 'personId'>>
   setParam: (param: SearchPanelProps['param']) => void
   users: User[]
 }
@@ -18,8 +18,12 @@ const SearchPanel = (props: SearchPanelProps) => {
   const { param, setParam, users } = props
 
   return (
-    <FormWrapper layout="inline">
-      <Form.Item>
+    <FormWrapper
+      labelAlign="left"
+      wrapperCol={{ span: 12, md: { span: 6 } }}
+      labelCol={{ sm: { span: 3 }, md: { span: 2 } }}
+    >
+      <Form.Item label="查找名稱">
         <Input
           type="text"
           value={param.name}
@@ -31,25 +35,18 @@ const SearchPanel = (props: SearchPanelProps) => {
           }}
         />
       </Form.Item>
-      <Form.Item>
-        <Select
-          onChange={(value) => {
+      <Form.Item label="負責人">
+        <UserSelect
+          defaultOptionName="負責人"
+          value={param.personId}
+          users={users}
+          onChange={(value) =>
             setParam({
               ...param,
               personId: value
             })
-          }}
-          value={param.personId}
-        >
-          <Select.Option value={''}>全部</Select.Option>
-          {users.map((item) => {
-            return (
-              <Select.Option value={item.id} key={item.id}>
-                {item.name}
-              </Select.Option>
-            )
-          })}
-        </Select>
+          }
+        ></UserSelect>
       </Form.Item>
     </FormWrapper>
   )

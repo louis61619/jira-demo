@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 
 export const MainWrapper = styled.div`
   /* padding: 1.6rem; */
+  overflow: hidden;
 `
 
 export const ContentWrapper = styled.main`

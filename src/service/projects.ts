@@ -10,9 +10,49 @@ export function useProjects(param: SearchPanelProps['param']) {
   const client = useReuqest()
   const { run, ...result } = useAsync<Project[]>()
 
+  const fetchProjects = () => client('projects', { data: cleanObject(param || {}) })
+
   useEffect(() => {
-    run(client('projects', { data: cleanObject(param || {}) }))
+    run(fetchProjects(), { retry: fetchProjects })
   }, [param, client])
 
   return result
+}
+
+export function useEditProject() {
+  const client = useReuqest()
+  const { run, ...result } = useAsync()
+
+  const mutate = (params: Partial<Project>) => {
+    return run(
+      client(`projects/${params.id}`, {
+        data: params,
+        method: 'PATCH'
+      })
+    )
+  }
+
+  return {
+    mutate,
+    ...result
+  }
+}
+
+export function useAddProject() {
+  const client = useReuqest()
+  const { run, ...result } = useAsync()
+
+  const mutate = (params: Partial<Project>) => {
+    run(
+      client(`projects/${params.id}`, {
+        data: params,
+        method: 'POST'
+      })
+    )
+  }
+
+  return {
+    mutate,
+    ...result
+  }
 }

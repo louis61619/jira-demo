@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useMountedRef } from './useMount'
 
 interface AsyncState<D> {
   error: Error | null
@@ -26,6 +27,11 @@ export const useAsync = <D>(initialState?: AsyncState<D>, initialConfig?: typeof
     ...initialState
   })
 
+  const { mountedRef } = useMountedRef()
+
+  // useState會進行一個惰性初始化的操作，所以要保存兩層
+  const [retry, setRetry] = useState(() => () => {})
+
   const setData = (data: D) =>
     setstate({
       data,
@@ -40,14 +46,24 @@ export const useAsync = <D>(initialState?: AsyncState<D>, initialConfig?: typeof
       data: null
     })
 
-  const run = (promise: Promise<D>) => {
+  const run = (promise: Promise<D>, runConfig?: { retry: () => Promise<D> }) => {
     if (!promise || !promise.then) {
       throw new Error('需傳入promise類型')
     }
+
+    // 這邊不太了解
+    // 應該是一開始是傳入promise，第二次則重新調用函數獲取promsie
+    setRetry(() => () => {
+      runConfig?.retry && run(runConfig.retry(), runConfig)
+    })
+
+    // 如果在useCallback中使用到state會導致無限循環
     setstate({ ...state, stat: 'loading' })
     return promise
       .then((data) => {
-        setData(data)
+        if (mountedRef.current) {
+          setData(data)
+        }
         return data
       })
       .catch((err) => {
@@ -67,6 +83,7 @@ export const useAsync = <D>(initialState?: AsyncState<D>, initialConfig?: typeof
     run,
     setData,
     setError,
-    ...state
+    ...state,
+    retry
   }
 }

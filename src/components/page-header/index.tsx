@@ -3,6 +3,7 @@ import { Button } from 'antd'
 import { useAuth } from '@/hooks'
 import { resetRoute } from '@/utils/handle-route'
 import { HeaderWrapper, NavBar, NavItem, NavLogo, UserBar } from './style'
+import { ReactComponent as Logo } from '@/assets/images/software-logo.svg'
 
 function PageHeader(): ReactElement {
   const { logout, user } = useAuth()
@@ -15,12 +16,18 @@ function PageHeader(): ReactElement {
   return (
     <HeaderWrapper>
       <NavBar>
-        <NavLogo onClick={logoClick} />
+        <NavLogo onClick={logoClick}>
+          <div>
+            <Logo />
+          </div>
+        </NavLogo>
         <NavItem>項目</NavItem>
         <NavItem>用戶</NavItem>
       </NavBar>
       <UserBar gap={1}>
-        <NavItem type="primary">Hi, {user?.name}</NavItem>
+        <NavItem type="primary" mobileHidden={true}>
+          Hi, {user?.name}
+        </NavItem>
         <Button type="primary" onClick={logout}>
           登出
         </Button>
