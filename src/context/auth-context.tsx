@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
 import * as hadleAuth from '@/utils/handle-auth'
-import { boostrapUser } from '@/utils/boostrap-user'
+import { bootstrapUser } from '@/utils/boostrap-user'
 import { useAsync, useMount } from '@/hooks'
 import PageLoading from '@/components/page-status/PageLoading'
 import PageError from '@/components/page-status/PageError'
@@ -28,12 +28,14 @@ export const AuthProvider: React.FC = ({ children }) => {
   const register = (data: AuthForm) => hadleAuth.register(data).then(setUser)
   const logout = () => hadleAuth.logout().then(() => setUser(null))
 
-  useMount(() => {
-    run(boostrapUser())
+  useMount(
+    useCallback(() => {
+      run(bootstrapUser())
+    }, [run])
     // const user = await boostrapUser()
     // setUser(user)
     // setIsInit(true)
-  })
+  )
 
   if (isLoading) return <PageLoading />
 

@@ -1,7 +1,7 @@
 import { request } from '@/service'
 import { getToken } from './handle-auth'
 
-export const boostrapUser = async () => {
+export const bootstrapUser = async () => {
   let user = null
   const token = getToken()
   if (token) {

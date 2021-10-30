@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react'
 export function useMount(callback: () => void) {
   useEffect(() => {
     callback()
-  }, [])
+  }, [callback])
 }
 
 export function useUnMount() {

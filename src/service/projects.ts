@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
 import { useAsync, useReuqest } from '@/hooks'
 
 import { Project } from '@/page/main/project-list/components/List'
@@ -10,11 +10,14 @@ export function useProjects(param: SearchPanelProps['param']) {
   const client = useReuqest()
   const { run, ...result } = useAsync<Project[]>()
 
-  const fetchProjects = () => client('projects', { data: cleanObject(param || {}) })
+  const fetchProjects = useCallback(
+    () => client('projects', { data: cleanObject(param || {}) }),
+    [client, param]
+  )
 
   useEffect(() => {
     run(fetchProjects(), { retry: fetchProjects })
-  }, [param, client])
+  }, [param, client, fetchProjects, run])
 
   return result
 }
