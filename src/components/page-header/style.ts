@@ -23,7 +23,7 @@ export const NavItem = styled.h3<{
     display: ${(props) => props.mobileHidden && 'none'};
   }
 `
-export const NavLogo = styled.div`
+export const LogoWrapper = styled.div`
   cursor: pointer;
 
   div {

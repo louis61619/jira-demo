@@ -1,16 +1,19 @@
 import React from 'react'
+import { Typography, Divider, Button } from 'antd'
 
 import { useDebounce } from '@/hooks'
 import { useProjects } from '@/service/projects'
 import { useUsers } from '@/service/users'
-import { Typography, Divider } from 'antd'
 
 import SearchPanel from './components/SearchPanel'
 import List from './components/List'
+import { ProjectListWrapper } from './style'
 
 import { useProjectSearchParams } from './hooks'
 
-interface ProjectListProps {}
+interface ProjectListProps {
+  setProjectModalOpen?: (isOpen: boolean) => void
+}
 
 const ProjectList = (props: ProjectListProps) => {
   // const [param, setParam] = useState<SearchPanelProps['param']>({
@@ -52,13 +55,22 @@ const ProjectList = (props: ProjectListProps) => {
   // }, [debounceParam, client])
 
   return (
-    <div>
-      <SearchPanel param={param} setParam={setParam} users={users || []} />
+    <ProjectListWrapper>
+      <div className="top">
+        <SearchPanel param={param} setParam={setParam} users={users || []} />
+        <Button onClick={() => props.setProjectModalOpen?.(true)}>創建項目</Button>
+      </div>
+
       <Divider />
       {error && <Typography.Text type="danger">{error.message}</Typography.Text>}
-      <button onClick={retry}>retry</button>
-      <List refresh={retry} loading={isLoading} dataSource={list || []} users={users || []} />
-    </div>
+      <List
+        setProjectModalOpen={props.setProjectModalOpen}
+        refresh={retry}
+        loading={isLoading}
+        dataSource={list || []}
+        users={users || []}
+      />
+    </ProjectListWrapper>
   )
 }
 

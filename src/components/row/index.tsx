@@ -3,12 +3,14 @@ import styled from '@emotion/styled'
 interface RowProps {
   gap?: number
   between?: boolean
+  width?: string
 }
 
 const Row = styled.div<RowProps>`
   display: flex;
   align-items: center;
   justify-content: ${(props) => (props.between ? 'space-between' : undefined)};
+  width: ${(props) => props.width};
   > * {
     margin-top: 0;
     margin-bottom: 0;

@@ -18,7 +18,7 @@ const Login: React.FC = (props) => {
   const { run, isLoading } = useAsync(undefined, { throwOnError: true })
 
   useUnMount()
-  useDocumentTitle('請登錄註冊以繼續')
+  useDocumentTitle('請登入註冊以繼續')
 
   const handleSubmit = async ({
     cpassword,

@@ -6,7 +6,7 @@ import { SearchPanelProps } from '@/page/main/project-list/components/SearchPane
 
 import { cleanObject } from '@/utils/clean-object'
 
-export function useProjects(param: SearchPanelProps['param']) {
+export function useProjects(param?: SearchPanelProps['param']) {
   const client = useReuqest()
   const { run, ...result } = useAsync<Project[]>()
 

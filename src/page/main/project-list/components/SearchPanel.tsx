@@ -20,8 +20,8 @@ const SearchPanel = (props: SearchPanelProps) => {
   return (
     <FormWrapper
       labelAlign="left"
-      wrapperCol={{ span: 12, md: { span: 6 } }}
-      labelCol={{ sm: { span: 3 }, md: { span: 2 } }}
+      wrapperCol={{ md: 10, sm: 20 }}
+      labelCol={{ sm: 3, md: 3, lg: 2 }}
     >
       <Form.Item label="查找名稱">
         <Input

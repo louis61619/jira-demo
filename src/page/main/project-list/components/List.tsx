@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { Table, TableColumnsType, TableProps } from 'antd'
+import { Button, Dropdown, Menu, Table, TableColumnsType, TableProps } from 'antd'
+import { DashOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 
 import type { User } from '@/types'
@@ -21,6 +22,7 @@ export type Project = {
 interface ListProps extends TableProps<Project> {
   users: User[]
   refresh: () => void
+  setProjectModalOpen?: (isOpen: boolean) => void
 }
 
 const List = (props: ListProps) => {
@@ -66,6 +68,25 @@ const List = (props: ListProps) => {
         return <span key={project.id}>{project.created ? foramteDate(project.created) : '無'}</span>
       },
       width: 200
+    },
+    {
+      title: '操作',
+      render() {
+        return (
+          <Dropdown
+            overlay={
+              <Menu>
+                <Menu.Item key="edit" onClick={() => props.setProjectModalOpen?.(true)}>
+                  <Button type="link">編輯</Button>
+                </Menu.Item>
+              </Menu>
+            }
+          >
+            <DashOutlined />
+          </Dropdown>
+        )
+      },
+      width: 80
     }
   ]
 

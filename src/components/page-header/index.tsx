@@ -1,11 +1,20 @@
-import React, { ReactElement } from 'react'
+import React from 'react'
 import { Button } from 'antd'
 import { useAuth } from '@/hooks'
 import { resetRoute } from '@/utils/handle-route'
-import { HeaderWrapper, NavBar, NavItem, NavLogo, UserBar } from './style'
+import { HeaderWrapper, NavBar, NavItem, LogoWrapper, UserBar } from './style'
+import ProjectPopover from '@/components/project-popover'
 import { ReactComponent as Logo } from '@/assets/images/software-logo.svg'
 
-function PageHeader(): ReactElement {
+const NavLogo: React.FC<{ onClick: React.MouseEventHandler<HTMLElement> }> = (props) => (
+  <LogoWrapper {...props}>
+    <div>
+      <Logo />
+    </div>
+  </LogoWrapper>
+)
+
+const PageHeader = (props: { setProjectModalOpen: (isOpen: boolean) => void }) => {
   const { logout, user } = useAuth()
 
   const logoClick = () => {
@@ -16,12 +25,8 @@ function PageHeader(): ReactElement {
   return (
     <HeaderWrapper>
       <NavBar>
-        <NavLogo onClick={logoClick}>
-          <div>
-            <Logo />
-          </div>
-        </NavLogo>
-        <NavItem>項目</NavItem>
+        <NavLogo onClick={logoClick} />
+        <ProjectPopover setProjectModalOpen={props.setProjectModalOpen} />
         <NavItem>用戶</NavItem>
       </NavBar>
       <UserBar gap={1}>

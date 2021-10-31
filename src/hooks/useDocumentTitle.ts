@@ -11,5 +11,5 @@ export function useDocumentTitle(title: string, keepOnUnmount: boolean = true) {
     return () => {
       if (!keepOnUnmount) document.title = oldTitle
     }
-  })
+  }, [keepOnUnmount, oldTitle])
 }
