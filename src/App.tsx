@@ -1,18 +1,28 @@
 import React from 'react'
-import { useAuth } from '@/hooks'
-import PageError from '@/components/page-status/PageError'
-import ErrorBoundary from '@/components/error-boundary'
-
-import Main from './page/main'
-import Login from './page/login'
-
+import { useUndo } from './useUndo'
 function App() {
-  const { user } = useAuth()
+  const [
+    countState,
+    { set: setCount, reset: resetCount, undo: undoCount, redo: redoCount, canRedo, canUndo }
+  ] = useUndo<number>(0)
+  const { present: presentCount } = countState
 
   return (
-    <ErrorBoundary fallbackRender={PageError}>
-      <div className="App">{user ? <Main /> : <Login />}</div>
-    </ErrorBoundary>
+    // <ErrorBoundary fallbackRender={PageError}>
+    //   <div className="App">{user ? <Main /> : <Login />}</div>
+    // </ErrorBoundary>
+    <div>
+      <p>count: {presentCount}</p>
+      <button onClick={() => setCount(presentCount + 1)}>+</button>
+      <button onClick={() => setCount(presentCount - 1)}>-</button>
+      <button onClick={redoCount} disabled={!canRedo}>
+        下一步
+      </button>
+      <button onClick={undoCount} disabled={!canUndo}>
+        上一步
+      </button>
+      <button onClick={() => resetCount(0)}>reset</button>
+    </div>
   )
 }
 
