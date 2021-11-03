@@ -1,6 +1,8 @@
 import React from 'react'
-
 import { Popover, Typography, List } from 'antd'
+import { useDispatch } from 'react-redux'
+import { projectListActions } from '@/store/project-list'
+
 import { useProjects } from '@/service/projects'
 import { ButtonNoPadding } from '@/components/button'
 import { PopoverWrapper } from './style'
@@ -10,7 +12,8 @@ interface ProjectPopoverProps {
 }
 
 const ProjectPopover = (props: ProjectPopoverProps) => {
-  const { data: projects, isLoading } = useProjects()
+  const dispatch = useDispatch()
+  const { data: projects } = useProjects()
   const pinnedProjects = projects?.filter((project) => project.pin)
 
   const content = (
@@ -23,7 +26,7 @@ const ProjectPopover = (props: ProjectPopoverProps) => {
           </List.Item>
         ))}
       </List>
-      <ButtonNoPadding onClick={() => props.setProjectModalOpen?.(true)} type="link">
+      <ButtonNoPadding onClick={() => dispatch(projectListActions.openProjectModel())} type="link">
         創建項目
       </ButtonNoPadding>
     </PopoverWrapper>

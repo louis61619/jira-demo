@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Route, Routes, Navigate } from 'react-router'
 import { BrowserRouter } from 'react-router-dom'
 
@@ -16,29 +16,21 @@ interface MainProps {}
 const Main = (props: MainProps) => {
   useDocumentTitle('項目列表', false)
 
-  const [projectModalOpen, setProjectModalOpen] = useState(false)
-
   return (
     <MainWrapper>
-      <PageHeader setProjectModalOpen={setProjectModalOpen} />
+      <PageHeader />
       <ContentWrapper>
         {/* <ProjectList /> */}
         {/* <Route */}
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Navigate to="/project" />} />
-            <Route
-              path="/project"
-              element={<ProjectList setProjectModalOpen={setProjectModalOpen} />}
-            />
+            <Route path="/project" element={<ProjectList />} />
             <Route path="/project/:id/*" element={<Project />} />
           </Routes>
         </BrowserRouter>
       </ContentWrapper>
-      <ProjectModal
-        projectModalOpen={projectModalOpen}
-        onClose={() => setProjectModalOpen(false)}
-      />
+      <ProjectModal />
     </MainWrapper>
   )
 }

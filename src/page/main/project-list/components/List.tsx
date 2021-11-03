@@ -3,6 +3,9 @@ import React from 'react'
 import { Button, Dropdown, Menu, Table, TableColumnsType, TableProps } from 'antd'
 import { DashOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+
+import { projectListActions } from '@/store/project-list'
 
 import type { User } from '@/types'
 
@@ -27,6 +30,7 @@ interface ListProps extends TableProps<Project> {
 
 const List = (props: ListProps) => {
   const { users, refresh, ...otherProps } = props
+  const dispatch = useDispatch()
   const { mutate } = useEditProject()
 
   // const pinProject = (id: number, pin: boolean) => mutate({ id, pin })
@@ -76,7 +80,10 @@ const List = (props: ListProps) => {
           <Dropdown
             overlay={
               <Menu>
-                <Menu.Item key="edit" onClick={() => props.setProjectModalOpen?.(true)}>
+                <Menu.Item
+                  key="edit"
+                  onClick={() => dispatch(projectListActions.openProjectModel())}
+                >
                   <Button type="link">編輯</Button>
                 </Menu.Item>
               </Menu>
