@@ -1,9 +1,10 @@
 import React from 'react'
-import { Typography, Divider, Button } from 'antd'
+import { Divider, Button } from 'antd'
 
-import { useDebounce } from '@/hooks'
+import { useDebounce, useProjectModal } from '@/hooks'
 import { useProjects } from '@/service/projects'
 import { useUsers } from '@/service/users'
+import ErrorBox from '@/components/error-box'
 
 import SearchPanel from './components/SearchPanel'
 import List from './components/List'
@@ -11,11 +12,7 @@ import { ProjectListWrapper } from './style'
 
 import { useProjectSearchParams } from './hooks'
 
-interface ProjectListProps {
-  setProjectModalOpen?: (isOpen: boolean) => void
-}
-
-const ProjectList = (props: ProjectListProps) => {
+const ProjectList = () => {
   // const [param, setParam] = useState<SearchPanelProps['param']>({
   //   name: '',
   //   personId: ''
@@ -30,8 +27,9 @@ const ProjectList = (props: ProjectListProps) => {
 
   const [param, setParam] = useProjectSearchParams()
   const debounceParam = useDebounce(param, 200)
-  const { isLoading, error, data: list, retry } = useProjects(debounceParam)
+  const { isLoading, error, data: list } = useProjects(debounceParam)
   const { data: users } = useUsers()
+  const { open } = useProjectModal()
 
   // useEffect(() => {
   //   // 1. 使用原始的fetch
@@ -58,18 +56,12 @@ const ProjectList = (props: ProjectListProps) => {
     <ProjectListWrapper>
       <div className="top">
         <SearchPanel param={param} setParam={setParam} users={users || []} />
-        <Button onClick={() => props.setProjectModalOpen?.(true)}>創建項目</Button>
+        <Button onClick={open}>創建項目</Button>
       </div>
 
       <Divider />
-      {error && <Typography.Text type="danger">{error.message}</Typography.Text>}
-      <List
-        setProjectModalOpen={props.setProjectModalOpen}
-        refresh={retry}
-        loading={isLoading}
-        dataSource={list || []}
-        users={users || []}
-      />
+      <ErrorBox error={error} />
+      <List loading={isLoading} dataSource={list || []} users={users || []} />
     </ProjectListWrapper>
   )
 }

@@ -14,7 +14,7 @@ const NavLogo: React.FC<{ onClick: React.MouseEventHandler<HTMLElement> }> = (pr
   </LogoWrapper>
 )
 
-const PageHeader = (props: { setProjectModalOpen: (isOpen: boolean) => void }) => {
+const PageHeader = () => {
   const { logout, user } = useAuth()
 
   const logoClick = () => {
@@ -26,7 +26,7 @@ const PageHeader = (props: { setProjectModalOpen: (isOpen: boolean) => void }) =
     <HeaderWrapper>
       <NavBar>
         <NavLogo onClick={logoClick} />
-        <ProjectPopover setProjectModalOpen={props.setProjectModalOpen} />
+        <ProjectPopover />
         <NavItem>用戶</NavItem>
       </NavBar>
       <UserBar gap={1}>

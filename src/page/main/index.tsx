@@ -16,29 +16,22 @@ interface MainProps {}
 const Main = (props: MainProps) => {
   useDocumentTitle('項目列表', false)
 
-  const [projectModalOpen, setProjectModalOpen] = useState(false)
-
   return (
     <MainWrapper>
-      <PageHeader setProjectModalOpen={setProjectModalOpen} />
-      <ContentWrapper>
-        {/* <ProjectList /> */}
-        {/* <Route */}
-        <BrowserRouter>
+      <BrowserRouter>
+        <PageHeader />
+        <ContentWrapper>
+          {/* <ProjectList /> */}
+          {/* <Route */}
+
           <Routes>
             <Route path="/" element={<Navigate to="/project" />} />
-            <Route
-              path="/project"
-              element={<ProjectList setProjectModalOpen={setProjectModalOpen} />}
-            />
+            <Route path="/project" element={<ProjectList />} />
             <Route path="/project/:id/*" element={<Project />} />
           </Routes>
-        </BrowserRouter>
-      </ContentWrapper>
-      <ProjectModal
-        projectModalOpen={projectModalOpen}
-        onClose={() => setProjectModalOpen(false)}
-      />
+        </ContentWrapper>
+        <ProjectModal />
+      </BrowserRouter>
     </MainWrapper>
   )
 }

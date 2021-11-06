@@ -1,10 +1,10 @@
-import { Typography } from 'antd'
+import ErrorBox from '@/components/error-box'
 import { FullPageWrapper } from './style'
 
 const PageError = ({ error }: { error: Error | null }) => {
   return (
     <FullPageWrapper>
-      <Typography.Text type="danger">{error?.message}</Typography.Text>
+      <ErrorBox error={error} />
     </FullPageWrapper>
   )
 }

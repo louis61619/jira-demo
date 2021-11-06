@@ -1,13 +1,16 @@
 import React from 'react'
 import IdSelect from '@/components/id-select'
-import { User } from '@/types'
+import { useUsers } from '@/service/users'
 
 interface UserSelectProps extends React.ComponentProps<typeof IdSelect> {
-  users: User[]
+  // users: User[]
 }
 
 const UserSelect = (props: UserSelectProps) => {
-  const { users, ...resetProps } = props
+  const { ...resetProps } = props
+
+  const { data: users } = useUsers()
+
   return <IdSelect options={users || []} {...resetProps}></IdSelect>
 }
 

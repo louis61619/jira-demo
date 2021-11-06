@@ -3,7 +3,7 @@ import { Input, Form } from 'antd'
 
 import type { User } from '@/types'
 
-import UserSelect from './UserSelect'
+import UserSelect from '@/components/user-select'
 
 import { Project } from './List'
 import { FormWrapper } from './style'
@@ -39,7 +39,6 @@ const SearchPanel = (props: SearchPanelProps) => {
         <UserSelect
           defaultOptionName="負責人"
           value={param.personId}
-          users={users}
           onChange={(value) =>
             setParam({
               ...param,

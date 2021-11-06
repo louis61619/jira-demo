@@ -3,13 +3,13 @@ import React from 'react'
 import { Popover, Typography, List } from 'antd'
 import { useProjects } from '@/service/projects'
 import { ButtonNoPadding } from '@/components/button'
+import { useProjectModal } from '@/hooks'
+
 import { PopoverWrapper } from './style'
 
-interface ProjectPopoverProps {
-  setProjectModalOpen?: (isOpen: boolean) => void
-}
+const ProjectPopover = () => {
+  const { open } = useProjectModal()
 
-const ProjectPopover = (props: ProjectPopoverProps) => {
   const { data: projects, isLoading } = useProjects()
   const pinnedProjects = projects?.filter((project) => project.pin)
 
@@ -23,7 +23,7 @@ const ProjectPopover = (props: ProjectPopoverProps) => {
           </List.Item>
         ))}
       </List>
-      <ButtonNoPadding onClick={() => props.setProjectModalOpen?.(true)} type="link">
+      <ButtonNoPadding onClick={open} type="link">
         創建項目
       </ButtonNoPadding>
     </PopoverWrapper>

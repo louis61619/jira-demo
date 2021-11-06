@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 
 import type { User } from '@/types'
 
+import { useProjectModal } from '@/hooks'
 import { useEditProject } from '@/service/projects'
 import { foramteDate } from '@/utils/fomate-time'
 import Pin from '@/components/pin'
@@ -21,18 +22,19 @@ export type Project = {
 
 interface ListProps extends TableProps<Project> {
   users: User[]
-  refresh: () => void
-  setProjectModalOpen?: (isOpen: boolean) => void
+  // refresh: () => void
+  // setProjectModalOpen?: (isOpen: boolean) => void
 }
 
 const List = (props: ListProps) => {
-  const { users, refresh, ...otherProps } = props
+  const { users, ...otherProps } = props
   const { mutate } = useEditProject()
+  const { startEdit } = useProjectModal()
+  const editProject = (id: number) => startEdit(id)
 
   // const pinProject = (id: number, pin: boolean) => mutate({ id, pin })
-
   // point free 風格寫法
-  const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin }).then(() => refresh())
+  const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin })
 
   const columns: TableColumnsType<Project> = [
     {
@@ -71,13 +73,18 @@ const List = (props: ListProps) => {
     },
     {
       title: '操作',
-      render() {
+      render(value, project) {
         return (
           <Dropdown
             overlay={
               <Menu>
-                <Menu.Item key="edit" onClick={() => props.setProjectModalOpen?.(true)}>
-                  <Button type="link">編輯</Button>
+                <Menu.Item key="edit">
+                  <Button onClick={() => editProject(project.id)} type="link">
+                    編輯
+                  </Button>
+                </Menu.Item>
+                <Menu.Item key="remove">
+                  <Button type="link">刪除</Button>
                 </Menu.Item>
               </Menu>
             }

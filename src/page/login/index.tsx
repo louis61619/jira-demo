@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Form, Button, Input, Divider, Typography } from 'antd'
+import { Form, Button, Input, Divider } from 'antd'
 
 import { useAuth, useAsync, useUnMount, useDocumentTitle } from '@/hooks'
+import ErrorBox from '@/components/error-box'
 
 import { Container, CardWrapper, Logo, LongButton, ErrorWrapper } from './style'
 
@@ -56,7 +57,7 @@ const Login: React.FC = (props) => {
       <CardWrapper>
         <Logo />
         <ErrorWrapper>
-          {error && <Typography.Text type="danger">{error.message}</Typography.Text>}
+          <ErrorBox error={error} />
         </ErrorWrapper>
         <Form form={form} onFinish={(value) => handleSubmit(value)}>
           <Form.Item name="username" rules={[{ required: true, message: '請輸入用戶名' }]}>
