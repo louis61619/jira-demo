@@ -25,7 +25,7 @@ const Main = (props: MainProps) => {
           {/* <Route */}
 
           <Routes>
-            <Route path="/" element={<Navigate to="/project" />} />
+            <Route path="/" element={<Navigate to="/project" replace={true} />} />
             <Route path="/project" element={<ProjectList />} />
             <Route path="/project/:id/*" element={<Project />} />
           </Routes>

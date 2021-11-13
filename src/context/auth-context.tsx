@@ -6,7 +6,9 @@ import { useAsync, useMount } from '@/hooks'
 import PageLoading from '@/components/page-status/PageLoading'
 import PageError from '@/components/page-status/PageError'
 
-import { AuthForm, User } from '@/types'
+import { AuthForm } from '@/types'
+import { User } from '@/types/user'
+import { useQueryClient } from 'react-query'
 
 interface AuthContextProps {
   user: User | null
@@ -22,11 +24,16 @@ export const AuthProvider: React.FC = ({ children }) => {
   // const [isInit, setIsInit] = useState(false)
   // const [user, setUser] = useState<User | null>(null)
   const { data: user, isLoading, isError, error, run, setData: setUser } = useAsync<User | null>()
+  const queryClient = useQueryClient()
 
   // point free: (user) => setUser(user) 等同於 setUser
   const login = (data: AuthForm) => hadleAuth.login(data).then(setUser)
   const register = (data: AuthForm) => hadleAuth.register(data).then(setUser)
-  const logout = () => hadleAuth.logout().then(() => setUser(null))
+  const logout = () =>
+    hadleAuth.logout().then(() => {
+      queryClient.clear()
+      setUser(null)
+    })
 
   useMount(
     useCallback(() => {

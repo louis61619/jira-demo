@@ -1,5 +1,6 @@
 import qs from 'qs'
 import { logout } from '@/utils/handle-auth'
+import { cleanObject } from '@/utils/clean-object'
 
 export const apiUrl = process.env.REACT_APP_API_URL
 
@@ -22,9 +23,9 @@ export const request = async (
   }
 
   if (config.method?.toUpperCase() === 'GET') {
-    endponit += `?${qs.stringify(data)}`
+    endponit += `?${qs.stringify(cleanObject(data))}`
   } else {
-    config.body = JSON.stringify(data || {})
+    config.body = JSON.stringify(cleanObject(data) || {})
   }
 
   return window.fetch(`${apiUrl}/${endponit}`, config).then(async (res) => {

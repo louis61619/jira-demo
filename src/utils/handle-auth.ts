@@ -1,5 +1,6 @@
 import { apiUrl } from '@/service'
-import type { User, AuthForm } from '@/types'
+import type { AuthForm } from '@/types'
+import { User } from '@/types/user'
 
 const localStorageKey = '__auth_provider_token__'
 

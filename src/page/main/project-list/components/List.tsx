@@ -1,24 +1,17 @@
 import React from 'react'
 
-import { Button, Dropdown, Menu, Table, TableColumnsType, TableProps } from 'antd'
-import { DashOutlined } from '@ant-design/icons'
+import { Table, TableColumnsType, TableProps } from 'antd'
+
 import { Link } from 'react-router-dom'
 
-import type { User } from '@/types'
+import { User } from '@/types/user'
+import type { Project } from '@/types/project'
 
-import { useProjectModal } from '@/hooks'
+import { useProjectQueryKey } from '@/hooks'
 import { useEditProject } from '@/service/projects'
 import { foramteDate } from '@/utils/fomate-time'
 import Pin from '@/components/pin'
-
-export type Project = {
-  id: number
-  name: string
-  personId: number
-  pin: boolean
-  organization: string
-  created: string
-}
+import ListDropdown from './ListDropdown'
 
 interface ListProps extends TableProps<Project> {
   users: User[]
@@ -28,9 +21,7 @@ interface ListProps extends TableProps<Project> {
 
 const List = (props: ListProps) => {
   const { users, ...otherProps } = props
-  const { mutate } = useEditProject()
-  const { startEdit } = useProjectModal()
-  const editProject = (id: number) => startEdit(id)
+  const { mutate } = useEditProject(useProjectQueryKey())
 
   // const pinProject = (id: number, pin: boolean) => mutate({ id, pin })
   // point free 風格寫法
@@ -49,7 +40,7 @@ const List = (props: ListProps) => {
       // dataIndex: 'name',
       sorter: (a: any, b: any) => a.name.localeCompare(b.name),
       render(value, project) {
-        return <Link to={project.id.toString()}>{project.name}</Link>
+        return <Link to={project.id?.toString()}>{project.name}</Link>
       },
       width: 180
     },
@@ -74,24 +65,7 @@ const List = (props: ListProps) => {
     {
       title: '操作',
       render(value, project) {
-        return (
-          <Dropdown
-            overlay={
-              <Menu>
-                <Menu.Item key="edit">
-                  <Button onClick={() => editProject(project.id)} type="link">
-                    編輯
-                  </Button>
-                </Menu.Item>
-                <Menu.Item key="remove">
-                  <Button type="link">刪除</Button>
-                </Menu.Item>
-              </Menu>
-            }
-          >
-            <DashOutlined />
-          </Dropdown>
-        )
+        return <ListDropdown project={project} />
       },
       width: 80
     }

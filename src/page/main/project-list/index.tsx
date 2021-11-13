@@ -10,7 +10,7 @@ import SearchPanel from './components/SearchPanel'
 import List from './components/List'
 import { ProjectListWrapper } from './style'
 
-import { useProjectSearchParams } from './hooks'
+import { useProjectSearchParams } from '@/hooks'
 
 const ProjectList = () => {
   // const [param, setParam] = useState<SearchPanelProps['param']>({
@@ -55,9 +55,10 @@ const ProjectList = () => {
   return (
     <ProjectListWrapper>
       <div className="top">
-        <SearchPanel param={param} setParam={setParam} users={users || []} />
+        <h2>項目列表</h2>
         <Button onClick={open}>創建項目</Button>
       </div>
+      <SearchPanel param={param} setParam={setParam} users={users || []} />
 
       <Divider />
       <ErrorBox error={error} />

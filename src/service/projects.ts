@@ -1,13 +1,12 @@
 // import { useEffect, useCallback } from 'react'
-import { useReuqest } from '@/hooks'
-
-import { Project } from '@/page/main/project-list/components/List'
-import { SearchPanelProps } from '@/page/main/project-list/components/SearchPanel'
-
+import { QueryKey, useMutation, useQuery, useQueryClient } from 'react-query'
+import { useReuqest, useEditConfig, useDeleteConfig } from '@/hooks'
 import { cleanObject } from '@/utils/clean-object'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
 
-export function useProjects(param?: SearchPanelProps['param']) {
+import { Project } from '@/types/project'
+// import { useProjectSearchParams } from '@/hooks'
+
+export function useProjects(param?: Partial<Project>) {
   const client = useReuqest()
 
   // const { run, ...result } = useAsync<Project[]>()
@@ -23,13 +22,13 @@ export function useProjects(param?: SearchPanelProps['param']) {
 
   // return result
 
-  // 使用useQuery
-  return useQuery<Project[], Error>(['projects', param], () =>
-    client('projects', { data: cleanObject(param || {}) })
-  )
+  // 使用useQuery替代useAsync
+  return useQuery<Project[], Error>(['projects', cleanObject(param)], () => {
+    return client('projects', { data: param })
+  })
 }
 
-export function useEditProject() {
+export function useEditProject(queryKey: QueryKey) {
   const client = useReuqest()
   // const { run, ...result } = useAsync()
 
@@ -46,7 +45,10 @@ export function useEditProject() {
   //   mutate,
   //   ...result
   // }
-  const queryClient = useQueryClient()
+
+  // const queryClient = useQueryClient()
+  // const [searchParams] = useProjectSearchParams()
+  // const queryKey = ['projects', cleanObject(searchParams)]
 
   return useMutation(
     (params: Partial<Project>) =>
@@ -54,13 +56,29 @@ export function useEditProject() {
         data: params,
         method: 'PATCH'
       }),
-    {
-      onSuccess: () => queryClient.invalidateQueries('projects')
-    }
+    useEditConfig(queryKey)
+    // {
+    //   onSuccess: () => queryClient.invalidateQueries('projects'),
+    //   // 樂觀更新
+    //   async onMutate(target) {
+    //     const previousItem = queryClient.getQueryData(queryKey)
+    //     queryClient.setQueryData(queryKey, (old?: Project[]) => {
+    //       return (
+    //         old?.map((project) =>
+    //           project.id === target.id ? { ...project, ...target } : project
+    //         ) || []
+    //       )
+    //     })
+    //     return { previousItem }
+    //   },
+    //   onError(error, newItem, context) {
+    //     queryClient.setQueryData(queryKey, (context as { previousItem: Project[] }).previousItem)
+    //   }
+    // }
   )
 }
 
-export function useAddProject() {
+export function useAddProject(queryKey: QueryKey) {
   const client = useReuqest()
   // const { run, ...result } = useAsync()
 
@@ -87,8 +105,24 @@ export function useAddProject() {
         method: 'POST'
       }),
     {
-      onSuccess: () => queryClient.invalidateQueries('projects')
+      onSuccess(data) {
+        const previousItem = queryClient.getQueryData(queryKey) as Project[]
+        queryClient.setQueryData(queryKey, [...previousItem, data])
+      }
     }
+    // useAddConfig(queryKey)
+  )
+}
+
+export const useDeleteProject = (queryKey: QueryKey) => {
+  const client = useReuqest()
+
+  return useMutation(
+    ({ id }: { id: number }) =>
+      client(`projects/${id}`, {
+        method: 'DELETE'
+      }),
+    useDeleteConfig(queryKey)
   )
 }
 

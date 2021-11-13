@@ -1,14 +1,15 @@
 import { useMemo, useState } from 'react'
-import { useSearchParams, URLSearchParamsInit } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 
-import { cleanObject } from '@/utils/clean-object'
+import { useSetUrlSearchParam } from './useSetUrlSearchParam'
 
 /**
  * 返回url頁面中指定ㄉ的參數值
  */
 
 export const useUrlQueryParam = <K extends string>(keys: K[]) => {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
+  const setSearchParams = useSetUrlSearchParam()
   const [stateKeys] = useState(keys)
 
   // 加入 as const 鎖定陣列中的每個item的類型
@@ -22,11 +23,7 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
     // setSearchParam
     (params: Partial<{ [key in K]: unknown }>) => {
       // Object.fromEntries 可以取得物件的iterator並將其轉化爲key: string的物件
-      const o = cleanObject({
-        ...Object.fromEntries(searchParams),
-        ...params
-      }) as URLSearchParamsInit
-      return setSearchParams(o)
+      return setSearchParams(params)
     }
   ] as const
 }

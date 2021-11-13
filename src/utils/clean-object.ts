@@ -6,7 +6,7 @@ export const isFalsy = (value: unknown) => (value === 0 ? false : !value)
 export const isVoid = (value: unknown) => value === null || value === undefined || value === ''
 
 // 類型為鍵值對
-export const cleanObject = (object: { [key: string]: unknown }) => {
+export const cleanObject = (object: any = {}) => {
   // 等同於Object.assign({}, object)
   const result = { ...object }
   Object.keys(result).forEach((key) => {

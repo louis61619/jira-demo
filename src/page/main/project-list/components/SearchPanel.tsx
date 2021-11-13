@@ -1,12 +1,12 @@
 import React from 'react'
 import { Input, Form } from 'antd'
 
-import type { User } from '@/types'
+import { User } from '@/types/user'
 
 import UserSelect from '@/components/user-select'
+import SearchForm from '@/components/search-form'
 
-import { Project } from './List'
-import { FormWrapper } from './style'
+import { Project } from '@/types/project'
 
 export interface SearchPanelProps {
   param: Partial<Pick<Project, 'name' | 'personId'>>
@@ -18,15 +18,12 @@ const SearchPanel = (props: SearchPanelProps) => {
   const { param, setParam, users } = props
 
   return (
-    <FormWrapper
-      labelAlign="left"
-      wrapperCol={{ md: 10, sm: 20 }}
-      labelCol={{ sm: 3, md: 3, lg: 2 }}
-    >
-      <Form.Item label="查找名稱">
+    <SearchForm layout="inline">
+      <Form.Item>
         <Input
           type="text"
           value={param.name}
+          placeholder="查找名稱"
           onChange={(e) => {
             setParam({
               ...param,
@@ -35,7 +32,7 @@ const SearchPanel = (props: SearchPanelProps) => {
           }}
         />
       </Form.Item>
-      <Form.Item label="負責人">
+      <Form.Item>
         <UserSelect
           defaultOptionName="負責人"
           value={param.personId}
@@ -45,9 +42,9 @@ const SearchPanel = (props: SearchPanelProps) => {
               personId: value
             })
           }
-        ></UserSelect>
+        />
       </Form.Item>
-    </FormWrapper>
+    </SearchForm>
   )
 }
 

@@ -1,31 +1,28 @@
 import React from 'react'
 import { Button } from 'antd'
+import { Link } from 'react-router-dom'
 import { useAuth } from '@/hooks'
-import { resetRoute } from '@/utils/handle-route'
 import { HeaderWrapper, NavBar, NavItem, LogoWrapper, UserBar } from './style'
 import ProjectPopover from '@/components/project-popover'
 import { ReactComponent as Logo } from '@/assets/images/software-logo.svg'
 
-const NavLogo: React.FC<{ onClick: React.MouseEventHandler<HTMLElement> }> = (props) => (
-  <LogoWrapper {...props}>
-    <div>
-      <Logo />
-    </div>
-  </LogoWrapper>
+const NavLogo: React.FC = (props) => (
+  <Link to="/">
+    <LogoWrapper>
+      <div>
+        <Logo />
+      </div>
+    </LogoWrapper>
+  </Link>
 )
 
 const PageHeader = () => {
   const { logout, user } = useAuth()
 
-  const logoClick = () => {
-    // console.log(location)
-    resetRoute()
-  }
-
   return (
     <HeaderWrapper>
       <NavBar>
-        <NavLogo onClick={logoClick} />
+        <NavLogo />
         <ProjectPopover />
         <NavItem>用戶</NavItem>
       </NavBar>

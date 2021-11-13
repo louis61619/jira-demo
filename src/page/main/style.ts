@@ -2,11 +2,16 @@ import styled from '@emotion/styled'
 
 export const MainWrapper = styled.div`
   /* padding: 1.6rem; */
-  overflow: hidden;
+  /* overflow: hidden; */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 `
 
 export const ContentWrapper = styled.main`
-  padding: 0 1.6rem;
+  padding: 0 2.4rem;
+  padding-bottom: 2.4rem;
+  flex: 1;
 `
 
 // 使用grid佈局

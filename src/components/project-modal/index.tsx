@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Drawer, Spin, Form, Input, Button } from 'antd'
-import { useProjectModal } from '@/hooks'
+import { useProjectModal, useProjectQueryKey } from '@/hooks'
 import UserSelect from '@/components/user-select'
 import ErrorBox from '@/components/error-box'
 import { useAddProject, useEditProject } from '@/service/projects'
@@ -13,7 +13,7 @@ const ProjectModal = () => {
   const title = editingProject ? '編輯項目' : '創建項目'
 
   const useMutateProject = editingProject ? useEditProject : useAddProject
-  const { mutateAsync, error, isLoading: mutateLoading } = useMutateProject()
+  const { mutateAsync, error, isLoading: mutateLoading } = useMutateProject(useProjectQueryKey())
 
   const [form] = useForm()
   const onFinish = (values: any) => {
@@ -23,12 +23,17 @@ const ProjectModal = () => {
     })
   }
 
+  const closeModal = () => {
+    form.resetFields()
+    close()
+  }
+
   useEffect(() => {
     form.setFieldsValue(editingProject)
   }, [editingProject, form])
 
   return (
-    <Drawer forceRender={true} onClose={close} visible={projectModalOpen} width="100%">
+    <Drawer forceRender={true} onClose={closeModal} visible={projectModalOpen} width="100%">
       <h1>{title}</h1>
       <ErrorBox error={error} />
       <ProjectModalWrapper>

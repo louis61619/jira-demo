@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { useAsync, useReuqest, useMount } from '@/hooks'
 
-import { User } from '@/types'
+import { User } from '@/types/user'
 
 export function useUsers() {
   const client = useReuqest()

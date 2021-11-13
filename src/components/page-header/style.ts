@@ -5,8 +5,12 @@ export const HeaderWrapper = styled.header`
   display: flex;
   justify-content: space-between;
   margin-bottom: 2rem;
-  padding: 1.6rem;
+  padding: 1.6rem 2.4rem;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
+
+  .ant-btn {
+    margin-right: 0;
+  }
 `
 
 export const NavBar = styled(Row)`
