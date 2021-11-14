@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Popover, Typography, List } from 'antd'
 import { useProjects } from '@/service/projects'
-import { ButtonNoPadding } from '@/components/button'
+import { ButtonNoPadding } from '@/components/lib'
 import { useProjectModal } from '@/hooks'
 
 import { PopoverWrapper } from './style'
@@ -10,7 +10,7 @@ import { PopoverWrapper } from './style'
 const ProjectPopover = () => {
   const { open } = useProjectModal()
 
-  const { data: projects, isLoading } = useProjects()
+  const { data: projects } = useProjects()
   const pinnedProjects = projects?.filter((project) => project.pin)
 
   const content = (

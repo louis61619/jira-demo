@@ -58,7 +58,7 @@ const ProjectList = () => {
         <h2>項目列表</h2>
         <Button onClick={open}>創建項目</Button>
       </div>
-      <SearchPanel param={param} setParam={setParam} users={users || []} />
+      <SearchPanel param={param} setParam={setParam} />
 
       <Divider />
       <ErrorBox error={error} />

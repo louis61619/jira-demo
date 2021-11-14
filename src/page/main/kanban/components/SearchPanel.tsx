@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Form, Input, Button } from 'antd'
 import UserSelect from '@/components/user-select'
 import SearchForm from '@/components/search-form'
 import TaskTypeSelect from '@/components/task-type-select'
-import { useTasksSearchParmas } from '../hooks/useKanbanSearchParams'
+import { useTasksSearchParmas } from '../hooks/useKanbans'
+import { useDebounce } from '@/hooks'
 
 interface Props {}
 
 const SearchPanel = (props: Props) => {
   const [param, setParam] = useTasksSearchParmas()
+  const [form] = Form.useForm()
+  const [name, setName] = useState(param.name || '')
+  const debounceName = useDebounce(name, 300)
 
   const reset = () => {
     setParam({
@@ -19,18 +23,20 @@ const SearchPanel = (props: Props) => {
     })
   }
 
+  useEffect(() => {
+    setParam({
+      name: debounceName
+    })
+  }, [debounceName, setParam])
+
   return (
-    <SearchForm layout="inline">
+    <SearchForm layout="inline" form={form}>
       <Form.Item>
         <Input
           type="text"
-          value={param.name}
+          value={name}
           placeholder="請輸入任務名..."
-          onChange={(e) => {
-            setParam({
-              name: e.target.value
-            })
-          }}
+          onChange={(e) => setName(e.target.value)}
         />
       </Form.Item>
       <Form.Item>

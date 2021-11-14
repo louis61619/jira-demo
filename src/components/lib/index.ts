@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { Button } from 'antd'
 
 interface RowProps {
   gap?: number
@@ -6,7 +7,11 @@ interface RowProps {
   width?: string
 }
 
-const Row = styled.div<RowProps>`
+export const ButtonNoPadding = styled(Button)`
+  padding: 0;
+`
+
+export const Row = styled.div<RowProps>`
   display: flex;
   align-items: center;
   justify-content: ${(props) => (props.between ? 'space-between' : undefined)};
@@ -17,5 +22,3 @@ const Row = styled.div<RowProps>`
     margin-right: ${(props) => (props.gap ? props.gap + 'rem' : '2rem')};
   }
 `
-
-export default Row

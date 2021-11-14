@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import Row from '@/components/row'
+import { Row } from '@/components/lib'
 
 export const HeaderWrapper = styled.header`
   display: flex;

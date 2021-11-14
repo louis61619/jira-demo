@@ -7,6 +7,11 @@ export const ProjectModalWrapper = styled.div`
   justify-content: center;
   align-items: center;
 
+  .ant-form {
+    max-width: 40rem;
+    width: 100%;
+  }
+
   .modal-button {
     .ant-form-item-control-input-content {
       text-align: end;

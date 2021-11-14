@@ -1,8 +1,6 @@
 import React from 'react'
 import { Input, Form } from 'antd'
 
-import { User } from '@/types/user'
-
 import UserSelect from '@/components/user-select'
 import SearchForm from '@/components/search-form'
 
@@ -11,11 +9,10 @@ import { Project } from '@/types/project'
 export interface SearchPanelProps {
   param: Partial<Pick<Project, 'name' | 'personId'>>
   setParam: (param: SearchPanelProps['param']) => void
-  users: User[]
 }
 
 const SearchPanel = (props: SearchPanelProps) => {
-  const { param, setParam, users } = props
+  const { param, setParam } = props
 
   return (
     <SearchForm layout="inline">

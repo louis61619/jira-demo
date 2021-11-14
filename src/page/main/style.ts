@@ -12,6 +12,11 @@ export const ContentWrapper = styled.main`
   padding: 0 2.4rem;
   padding-bottom: 2.4rem;
   flex: 1;
+  overflow: hidden;
+
+  @media (max-width: 767px) {
+    overflow: auto;
+  }
 `
 
 // 使用grid佈局

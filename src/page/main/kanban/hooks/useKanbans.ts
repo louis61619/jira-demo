@@ -1,6 +1,6 @@
-import { useUrlQueryParam } from '@/hooks'
+import { useDebounce, useUrlQueryParam } from '@/hooks'
 import { useProject } from '@/service/projects'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useLocation } from 'react-router'
 
 export const useProjectIdInUrl = () => {
@@ -12,13 +12,25 @@ export const useProjectIdInUrl = () => {
 
 export const useProjectInUrl = () => useProject(useProjectIdInUrl())
 
-export const useKanbanSearchParams = () => ({ projectId: useProjectIdInUrl() })
+// export const useKanbanSearchParams = () => ({ projectId: useProjectIdInUrl() })
 
-export const useKanbanQueryKey = () => ['kanbans', useKanbanSearchParams()]
+export const useKanbanSearchParams = () => {
+  return [
+    {
+      projectId: useProjectIdInUrl()
+    }
+  ]
+}
+
+export const useKanbanQueryKey = () => {
+  const [param] = useKanbanSearchParams()
+  return ['kanbans', param]
+}
 
 export const useTasksSearchParmas = () => {
   const [param, setParam] = useUrlQueryParam(['name', 'typeId', 'processorId', 'tagId'])
   const projectId = useProjectIdInUrl()
+  // const debounceName = useDebounce(param.name, 200)
 
   return [
     useMemo(
@@ -35,4 +47,7 @@ export const useTasksSearchParmas = () => {
   ] as const
 }
 
-export const useTasksQueryKey = () => ['tasks', useTasksSearchParmas()]
+export const useTasksQueryKey = () => {
+  const [param] = useTasksSearchParmas()
+  return ['tasks', param]
+}

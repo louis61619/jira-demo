@@ -41,7 +41,7 @@ const ProjectModal = () => {
           <Spin size="large" />
         ) : (
           <>
-            <Form form={form} layout={'vertical'} style={{ width: '40rem' }} onFinish={onFinish}>
+            <Form form={form} layout={'vertical'} onFinish={onFinish}>
               <Form.Item
                 label="名稱"
                 name="name"

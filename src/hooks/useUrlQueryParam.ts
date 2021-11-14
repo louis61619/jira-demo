@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import { useSetUrlSearchParam } from './useSetUrlSearchParam'
@@ -21,9 +21,12 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
       }, {} as { [key in K]: string })
     }, [searchParams, stateKeys]),
     // setSearchParam
-    (params: Partial<{ [key in K]: unknown }>) => {
-      // Object.fromEntries 可以取得物件的iterator並將其轉化爲key: string的物件
-      return setSearchParams(params)
-    }
+    useCallback(
+      (params: Partial<{ [key in K]: unknown }>) => {
+        // Object.fromEntries 可以取得物件的iterator並將其轉化爲key: string的物件
+        return setSearchParams(params)
+      },
+      [setSearchParams]
+    )
   ] as const
 }
