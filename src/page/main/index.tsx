@@ -21,7 +21,6 @@ const Main = (props: MainProps) => {
   useDocumentTitle('項目列表', false)
 
   const routeType = useRouteType()
-  console.log(routeType)
 
   return (
     <MainWrapper>
