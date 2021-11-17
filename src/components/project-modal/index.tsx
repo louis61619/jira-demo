@@ -34,7 +34,7 @@ const ProjectModal = () => {
 
   return (
     <Drawer forceRender={true} onClose={closeModal} visible={projectModalOpen} width="100%">
-      <h1>{title}</h1>
+      <h2>{title}</h2>
       <ErrorBox error={error} />
       <ProjectModalWrapper>
         {isLoading ? (
@@ -54,17 +54,8 @@ const ProjectModal = () => {
               >
                 <Input placeholder="請輸入項目名稱" />
               </Form.Item>
-              <Form.Item
-                label="部門"
-                name="organization"
-                rules={[
-                  {
-                    required: true,
-                    message: '請輸入部門名稱'
-                  }
-                ]}
-              >
-                <Input placeholder="請輸入部門名稱" />
+              <Form.Item label="備註" name="organization">
+                <Input placeholder="請輸入備註" />
               </Form.Item>
               <Form.Item
                 label="負責人"

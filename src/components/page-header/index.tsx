@@ -2,9 +2,10 @@ import React from 'react'
 import { Button } from 'antd'
 import { Link } from 'react-router-dom'
 import { useAuth } from '@/hooks'
-import { HeaderWrapper, NavBar, NavItem, LogoWrapper, UserBar } from './style'
-import ProjectPopover from '@/components/project-popover'
 import { ReactComponent as Logo } from '@/assets/images/software-logo.svg'
+import { HeaderWrapper, NavBar, NavItem, LogoWrapper, UserBar } from './style'
+import ProjectPopover from './ProjectPopover'
+import UserPopover from './UserPopover'
 
 const NavLogo: React.FC = (props) => (
   <Link to="/">
@@ -24,7 +25,7 @@ const PageHeader = () => {
       <NavBar>
         <NavLogo />
         <ProjectPopover />
-        <NavItem>用戶</NavItem>
+        <UserPopover />
       </NavBar>
       <UserBar gap={1}>
         <NavItem type="primary" mobileHidden={true}>

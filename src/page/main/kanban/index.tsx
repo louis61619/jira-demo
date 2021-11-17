@@ -1,7 +1,6 @@
 import React from 'react'
 import { Divider, Spin } from 'antd'
-import styled from '@emotion/styled'
-import { DragDropContext, DropResult, Droppable, Draggable } from 'react-beautiful-dnd'
+import { DragDropContext } from 'react-beautiful-dnd'
 
 import { useKanbans } from '@/service/kanban'
 import { useTasks } from '@/service/task'
@@ -9,7 +8,9 @@ import { useDocumentTitle } from '@/hooks'
 import { Drag, Drop, DropChild } from '@/components/drag-and-drop'
 
 import { useProjectInUrl, useKanbanSearchParams, useTasksSearchParmas } from './hooks/useKanbans'
-import KanbanColumn from './components/Column'
+import { useDragEnd } from './hooks/useDragEnd'
+
+import KanbanColumn from './components/KanbanColumn'
 import SearchPanel from './components/SearchPanel'
 import CreateKanban from './components/CreateKanban'
 import { ColumnsWrapper, KanbanWrapper } from './style'
@@ -27,9 +28,7 @@ const Kanban = (props: Props) => {
   const { isLoading: taskIsLoading } = useTasks(taskParam)
   const isLoading = taskIsLoading || kanbanIsLoading
 
-  const onDragEnd = () => {
-    console.log('--')
-  }
+  const onDragEnd = useDragEnd()
 
   return (
     <KanbanWrapper>
@@ -42,49 +41,23 @@ const Kanban = (props: Props) => {
       ) : (
         <ColumnsWrapper>
           <DragDropContext onDragEnd={onDragEnd}>
-            {/* <Drop type={'COLUMN'} direction="horizontal" droppableId="kanban">
+            <Drop type={'COLUMN'} direction="horizontal" droppableId="kanban">
               <DropChild style={{ display: 'flex' }}>
                 {kanbans?.map((kanban, index) => {
                   return (
                     <Drag key={kanban.id} draggableId={'kaban' + kanban.id} index={index}>
-                      <div>
-                        <KanbanColumn kanban={kanban} />
-                      </div>
+                      {/* <div> */}
+                      <KanbanColumn kanban={kanban} />
+                      {/* </div> */}
                     </Drag>
                   )
                 })}
               </DropChild>
-            </Drop> */}
-            <Droppable droppableId="board" type="COLUMN" direction="horizontal">
-              {(provided) => (
-                <div
-                  style={{ display: 'flex' }}
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                >
-                  {kanbans?.map((kanban, index) => (
-                    <KanbanColumn key={kanban.id} kanban={kanban} index={index} />
-                    // <Draggable key={kanban.id} draggableId={'kaban' + kanban.id} index={index}>
-                    //   {(provided) => (
-                    //     <KanbanColumn
-                    //       ref={provided.innerRef}
-                    //       {...provided.draggableProps}
-                    //       kanban={kanban}
-                    //     >
-                    //       <div className="title" {...provided.dragHandleProps}>
-                    //         <h3>{kanban.name}</h3>
-                    //         {/* <KanbanColumnMenu kanban={kanban} /> */}
-                    //       </div>
-                    //     </KanbanColumn>
-                    //   )}
-                    // </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
+            </Drop>
           </DragDropContext>
-          <CreateKanban />
+          <div>
+            <CreateKanban />
+          </div>
         </ColumnsWrapper>
       )}
       <TaskModal />

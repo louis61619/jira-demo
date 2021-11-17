@@ -45,3 +45,11 @@ export const LogoWrapper = styled.div`
 `
 
 export const UserBar = styled(Row)``
+
+export const PopoverWrapper = styled.div`
+  min-width: 30rem;
+
+  @media (max-width: 525px) {
+    min-width: 28rem;
+  }
+`

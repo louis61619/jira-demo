@@ -1,10 +1,13 @@
 import { QueryKey, useQueryClient } from 'react-query'
+import { reorder } from '@/utils/reorder'
+import { Task } from '@/types/task'
 
 export const useConfig = (queryKey: QueryKey, callback: (target: any, old?: any[]) => any[]) => {
   const queryClient = useQueryClient()
 
   return {
-    onSuccess: () => queryClient.invalidateQueries(queryKey),
+    // 如果在返回成功之後進行狀態效驗會和後續的更新衝突
+    // onSuccess: () => queryClient.invalidateQueries(queryKey),
     async onMutate(target: any) {
       queryClient.setQueryData(queryKey, (old?: any[]) => {
         return callback(target, old)
@@ -34,3 +37,16 @@ export const useEditConfig = (queryKey: QueryKey) =>
 //     console.log(target)
 //     return old ? [...old, target] : []
 //   })
+
+export const useReorderKanbanConfig = (queryKey: QueryKey) =>
+  useConfig(queryKey, (target, old) => reorder({ list: old, ...target }))
+
+export const useReorderTaskConfig = (queryKey: QueryKey) =>
+  useConfig(queryKey, (target, old) => {
+    const orderedList = reorder({ list: old, ...target }) as Task[]
+    const lastList = orderedList.map((item) =>
+      item.id === target.fromId ? { ...item, kanbanId: target.toKanbanId } : item
+    )
+    // console.log(lastList)
+    return lastList
+  })

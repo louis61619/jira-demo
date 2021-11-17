@@ -1,17 +1,20 @@
 import React from 'react'
+import type { Project } from '@/types/project'
 
 import { Table, TableColumnsType, TableProps } from 'antd'
 
 import { Link } from 'react-router-dom'
 
 import { User } from '@/types/user'
-import type { Project } from '@/types/project'
 
-import { useProjectQueryKey } from '@/hooks'
+import { useProjectModal, useProjectQueryKey } from '@/hooks'
+import { useDeleteProject } from '@/service/projects'
+
 import { useEditProject } from '@/service/projects'
 import { foramteDate } from '@/utils/fomate-time'
 import Pin from '@/components/pin'
-import ListDropdown from './ListDropdown'
+import ListDropdown from '@/components/list-dropdown'
+// import ListDropdown from './ListDropdown'
 
 interface ListProps extends TableProps<Project> {
   users: User[]
@@ -22,6 +25,10 @@ interface ListProps extends TableProps<Project> {
 const List = (props: ListProps) => {
   const { users, ...otherProps } = props
   const { mutate } = useEditProject(useProjectQueryKey())
+
+  const { startEdit } = useProjectModal()
+  const editProject = (id: number) => startEdit(id)
+  const { mutate: deleteProject } = useDeleteProject(useProjectQueryKey())
 
   // const pinProject = (id: number, pin: boolean) => mutate({ id, pin })
   // point free 風格寫法
@@ -65,7 +72,12 @@ const List = (props: ListProps) => {
     {
       title: '操作',
       render(value, project) {
-        return <ListDropdown project={project} />
+        return (
+          <ListDropdown
+            handleEdit={() => editProject(project.id)}
+            handleDelete={() => deleteProject({ id: project.id })}
+          />
+        )
       },
       width: 80
     }

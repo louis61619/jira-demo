@@ -1,6 +1,8 @@
 import styled from '@emotion/styled'
 
-export const ProjectWrapper = styled.div`
+// type RouteType = 'epic' | 'kanban'
+
+export const ProjectWrapper = styled.div<{ routeType: string }>`
   display: flex;
   /* flex-direction: column; */
 
@@ -28,7 +30,8 @@ export const ProjectWrapper = styled.div`
     .content {
       box-shadow: -5px 0 5px -5px rgba(0, 0, 0, 0.1);
       display: flex;
-      overflow: hidden;
+      /* overflow: hidden; */
+      overflow: ${(props) => (props.routeType !== 'epic' ? 'hidden' : '')};
       padding-left: 3.2rem;
     }
   }

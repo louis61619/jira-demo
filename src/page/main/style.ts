@@ -8,11 +8,14 @@ export const MainWrapper = styled.div`
   height: 100%;
 `
 
-export const ContentWrapper = styled.main`
+export const ContentWrapper = styled.main<{ routeType: string }>`
   padding: 0 2.4rem;
   padding-bottom: 2.4rem;
+  display: flex;
   flex: 1;
-  overflow: hidden;
+  overflow: ${(props) => {
+    return props.routeType === 'epic' ? 'auto' : 'hidden'
+  }};
 
   @media (max-width: 767px) {
     overflow: auto;

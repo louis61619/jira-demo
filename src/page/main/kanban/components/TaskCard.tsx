@@ -28,7 +28,7 @@ const TaskTypeIcon = ({ id }: { id: number }) => {
   return <img src={name === 'task' ? taskIcon : bugIcon} alt="icon" />
 }
 
-const TaskCard = ({ task, startEdit }: TaskCardProps) => {
+const TaskCard = forwardRef<any, TaskCardProps>(({ task, startEdit, ...props }, ref) => {
   const [param] = useTasksSearchParmas()
   const { mutate } = useDeleteTask(useTasksQueryKey())
   const { name: keyword } = param
@@ -46,7 +46,7 @@ const TaskCard = ({ task, startEdit }: TaskCardProps) => {
   }
 
   return (
-    <TaskCardWrapper key={task.id} onClick={() => startEdit(task.id)}>
+    <TaskCardWrapper {...props} ref={ref} key={task.id} onClick={() => startEdit(task.id)}>
       <p>
         <Mark keyword={keyword} name={task.name} />
       </p>
@@ -58,6 +58,6 @@ const TaskCard = ({ task, startEdit }: TaskCardProps) => {
       </div>
     </TaskCardWrapper>
   )
-}
+})
 
 export default TaskCard

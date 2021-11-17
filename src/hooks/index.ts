@@ -6,6 +6,12 @@ export { useAsync } from './useAsync'
 export { useDocumentTitle } from './useDocumentTitle'
 export { useUrlQueryParam } from './useUrlQueryParam'
 export { useProjectModal } from './useProjectModal'
-export { useConfig, useEditConfig, useDeleteConfig } from './useOptimisticOptions'
+export {
+  useConfig,
+  useEditConfig,
+  useDeleteConfig,
+  useReorderKanbanConfig,
+  useReorderTaskConfig
+} from './useOptimisticOptions'
 export { useProjectQueryKey, useProjectSearchParams } from './useProjectList'
 export { useSetUrlSearchParam } from './useSetUrlSearchParam'

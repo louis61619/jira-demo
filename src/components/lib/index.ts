@@ -16,9 +16,10 @@ export const Row = styled.div<RowProps>`
   align-items: center;
   justify-content: ${(props) => (props.between ? 'space-between' : undefined)};
   width: ${(props) => props.width};
+  flex-wrap: wrap;
   > * {
     margin-top: 0;
     margin-bottom: 0;
-    margin-right: ${(props) => (props.gap ? props.gap + 'rem' : '2rem')};
+    margin-right: ${(props) => (props.gap !== undefined ? props.gap + 'rem' : '2rem')};
   }
 `

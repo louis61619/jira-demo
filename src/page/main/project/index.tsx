@@ -23,14 +23,14 @@ const Project = (props: Props) => {
   // console.log(screens)
 
   return (
-    <ProjectWrapper>
+    <ProjectWrapper routeType={routeType}>
       {/* <aside className="aside"> */}
       <Menu mode={md ? 'inline' : 'horizontal'} selectedKeys={[routeType]}>
         <Menu.Item key="kanban">
           <Link to="kanban">看板</Link>
         </Menu.Item>
         <Menu.Item key="epic">
-          <Link to="epic">任务组</Link>
+          <Link to="epic">任務組</Link>
         </Menu.Item>
       </Menu>
       {/* </aside> */}

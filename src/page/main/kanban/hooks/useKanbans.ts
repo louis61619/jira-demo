@@ -1,6 +1,8 @@
-import { useDebounce, useUrlQueryParam } from '@/hooks'
+import { useMemo } from 'react'
+
+import { useUrlQueryParam } from '@/hooks'
 import { useProject } from '@/service/projects'
-import { useCallback, useMemo } from 'react'
+
 import { useLocation } from 'react-router'
 
 export const useProjectIdInUrl = () => {

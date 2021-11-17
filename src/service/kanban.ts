@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient, useMutation, QueryKey } from 'react-query'
-import { useReuqest, useDeleteConfig } from '@/hooks'
+import { useReuqest, useDeleteConfig, useReorderKanbanConfig } from '@/hooks'
 
+import { SortProps } from '@/types'
 import { Kanban } from '@/types/kanban'
 
 export function useKanbans(param?: Partial<Kanban>) {
@@ -42,4 +43,14 @@ export const useDeleteKanben = (queryKey: QueryKey) => {
       }),
     useDeleteConfig(queryKey)
   )
+}
+
+export const useReorderKanban = (queryKey: QueryKey) => {
+  const client = useReuqest()
+  return useMutation((params: SortProps) => {
+    return client('kanbans/reorder', {
+      data: params,
+      method: 'POST'
+    })
+  }, useReorderKanbanConfig(queryKey))
 }

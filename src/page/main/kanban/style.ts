@@ -4,7 +4,7 @@ import { DropChild } from '@/components/drag-and-drop'
 export const ColumnsWrapper = styled(DropChild)`
   display: inline-flex;
   flex: 1;
-  overflow-x: auto;
+  overflow: auto;
 `
 
 export const KanbanWrapper = styled.div`

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { useQueryClient } from 'react-query'
 import { Form, Input, Modal, FormProps, Spin } from 'antd'
 
 import { useEditTask } from '@/service/task'
@@ -18,7 +19,9 @@ const layout: FormProps = {
 const TaskModal = (props: Props) => {
   const [form] = Form.useForm()
   const { editingTask, editingTaskId, close, isLoading } = useTaskModal()
-  const { mutate: editTask, isLoading: editLoading } = useEditTask(useTasksQueryKey())
+  const { mutate: editTask } = useEditTask(useTasksQueryKey())
+
+  const queryClient = useQueryClient()
 
   const onCancel = () => {
     close()
@@ -26,10 +29,13 @@ const TaskModal = (props: Props) => {
   }
 
   const onOk = async () => {
-    editTask({
+    const newValue = {
       ...editingTask,
       ...form.getFieldsValue()
-    })
+    }
+    editTask(newValue)
+    // 設置單項任務緩存
+    queryClient.setQueryData(['task', { id: Number(editingTaskId) }], newValue)
     close()
   }
 
@@ -43,7 +49,6 @@ const TaskModal = (props: Props) => {
       cancelText="取消"
       onCancel={onCancel}
       onOk={onOk}
-      confirmLoading={editLoading}
       title="編輯"
       visible={!!editingTaskId}
       forceRender={true}
