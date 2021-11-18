@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "https://louis61619.github.io/jira-demo/static/css/main.43fda649.chunk.css",
+    "main.js": "https://louis61619.github.io/jira-demo/static/js/main.79fb15b2.chunk.js",
+    "main.js.map": "https://louis61619.github.io/jira-demo/static/js/main.79fb15b2.chunk.js.map",
+    "runtime-main.js": "https://louis61619.github.io/jira-demo/static/js/runtime-main.c19a0d64.js",
+    "runtime-main.js.map": "https://louis61619.github.io/jira-demo/static/js/runtime-main.c19a0d64.js.map",
+    "static/css/2.fd073d62.chunk.css": "https://louis61619.github.io/jira-demo/static/css/2.fd073d62.chunk.css",
+    "static/js/2.4ba1f9ae.chunk.js": "https://louis61619.github.io/jira-demo/static/js/2.4ba1f9ae.chunk.js",
+    "static/js/2.4ba1f9ae.chunk.js.map": "https://louis61619.github.io/jira-demo/static/js/2.4ba1f9ae.chunk.js.map",
+    "index.html": "https://louis61619.github.io/jira-demo/index.html",
+    "static/css/2.fd073d62.chunk.css.map": "https://louis61619.github.io/jira-demo/static/css/2.fd073d62.chunk.css.map",
+    "static/css/main.43fda649.chunk.css.map": "https://louis61619.github.io/jira-demo/static/css/main.43fda649.chunk.css.map",
+    "static/js/2.4ba1f9ae.chunk.js.LICENSE.txt": "https://louis61619.github.io/jira-demo/static/js/2.4ba1f9ae.chunk.js.LICENSE.txt",
+    "static/media/bug.bc7dca9d.svg": "https://louis61619.github.io/jira-demo/static/media/bug.bc7dca9d.svg",
+    "static/media/logo.svg": "https://louis61619.github.io/jira-demo/static/media/logo.8bb06c97.svg",
+    "static/media/software-logo.8043cb5b.svg": "https://louis61619.github.io/jira-demo/static/media/software-logo.8043cb5b.svg",
+    "static/media/task.8118694e.svg": "https://louis61619.github.io/jira-demo/static/media/task.8118694e.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.c19a0d64.js",
+    "static/css/2.fd073d62.chunk.css",
+    "static/js/2.4ba1f9ae.chunk.js",
+    "static/css/main.43fda649.chunk.css",
+    "static/js/main.79fb15b2.chunk.js"
+  ]
+}
